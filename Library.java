@@ -61,7 +61,11 @@ public class Library {
 	
 	// ask user for book to update,set to read,unreading a
 	// book is imposisble
-	public void setToRead() {
+	//I'm thinking we have the main method of MyLibrary
+	// further prompt user for book name and then just pass
+	// it into setToRead. maybe same for other commands
+	public void setToRead(Book bookToUpdate) {
+		bookToUpdate.read();
 		
 	}
 	
@@ -69,7 +73,10 @@ public class Library {
 	// ask for rating
 	// set rating
 	// ratings should be updateable
-	public void rate() {
+	// i changed rating attr in book to public, so 
+	// it is updateable
+	public void rate(Book bookToRate,int ratingToAdd) {
+		bookToRate.rating = ratingToAdd;
 		
 	}
 
@@ -78,10 +85,43 @@ public class Library {
 	// ask for appropriate info
 	// reteve info 
 	//* search will probbaly be used in getBooks()
-	public void search() {
+	public ArrayList<Book> search(String searchMethod, String searchId) {
 		
-	
+		// searchMethod will be title,author,rating
+		// searchId will be the data of the title,author,or rating
+		for(Book book : theLibrary) {
+			
+			ArrayList<Book> titleMatches = new ArrayList<Book>();
+			if(searchMethod.equals("title")){
+				if(book.getTitle().equals(searchId)) {
+					//return book but as arrrayList? or everything as string?
+					titleMatches.add(book);
+				}
+				return titleMatches;
+				
+			}
+			//author matches store the books that match author
+			ArrayList<Book> authorMatches = new ArrayList<Book>();
+			if(searchMethod.equals("author")) {
+				if(book.getAuthor().equals(searchId)) {
+					authorMatches.add(book);
+				}
+				return authorMatches;
+				
+			}
+			// ratingMatches stores the books that match rating searchId
+			ArrayList<Book> ratingMatches = new ArrayList<Book>();
+			if(searchMethod.equals("rating")) {
+				if(book.getRating() == Integer.parseInt(searchId)) {
+					ratingMatches.add(book);
+				}
+				return ratingMatches;
+			}
+		}
+		// should never get to null unless searchMethod and searchId have no matches
+		return null;
 	}
+	
 	// retrieve and display a list of books
 	// according to :
 	// all books sorted by title
@@ -89,9 +129,7 @@ public class Library {
 	// all books that have been read
 	// all books that have not been read
 	// 
-
-
-	public ArrayList<E> getBooks(){
+	public ArrayList<Book> getBooks(){
 		
 	}
 	
