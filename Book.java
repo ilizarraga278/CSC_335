@@ -27,18 +27,15 @@ public class Book {
 		return rating;
 	}
 	
-	// add rating to a book if rating attribute is null
-	public void setRating(int rating) {
-		
-	}
 	
 	// return true if book is read, false if not
 	public boolean isRead() {
-		
+		return isRead;
 	}
 	
 	// change read status of book
 	public void read() {
+		isRead = true;
 		
 		
 	}
