@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
-public class Library {
+public class Library implements Comparator<Book> {
 	private ArrayList<Book> theLibrary;
 	
 	// --- add instance variable here---
@@ -129,7 +130,20 @@ public class Library {
 	// all books that have been read
 	// all books that have not been read
 	// 
-	public ArrayList<Book> getBooks(){
+	public ArrayList<Book> getBooks(String sortMethod){
+		// sortMethod will be: title,author,read,unread
+		ArrayList<Book> sortedBooks = new ArrayList<Book>();
+		
+		
+	}
+
+	@Override
+	public int compare(Book o1, Book o2,String searchMethod) {
+		if (searchMethod.equals("title")) {
+			if(o1.getTitle().compareTo(o2.getTitle()) != 0){
+				return o1.getTitle().compareTo(o2.getTitle())
+			}
+		}
 		
 	}
 	
