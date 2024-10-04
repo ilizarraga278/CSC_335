@@ -4,9 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Scanner;
-public class Library implements Comparator<Book> {
+public class Library {
 	private ArrayList<Book> theLibrary;
 	
 	// --- add instance variable here---
@@ -62,11 +61,7 @@ public class Library implements Comparator<Book> {
 	
 	// ask user for book to update,set to read,unreading a
 	// book is imposisble
-	//I'm thinking we have the main method of MyLibrary
-	// further prompt user for book name and then just pass
-	// it into setToRead. maybe same for other commands
-	public void setToRead(Book bookToUpdate) {
-		bookToUpdate.read();
+	public void setToRead() {
 		
 	}
 	
@@ -74,10 +69,7 @@ public class Library implements Comparator<Book> {
 	// ask for rating
 	// set rating
 	// ratings should be updateable
-	// i changed rating attr in book to public, so 
-	// it is updateable
-	public void rate(Book bookToRate,int ratingToAdd) {
-		bookToRate.rating = ratingToAdd;
+	public void rate() {
 		
 	}
 
@@ -86,43 +78,10 @@ public class Library implements Comparator<Book> {
 	// ask for appropriate info
 	// reteve info 
 	//* search will probbaly be used in getBooks()
-	public ArrayList<Book> search(String searchMethod, String searchId) {
+	public void search() {
 		
-		// searchMethod will be title,author,rating
-		// searchId will be the data of the title,author,or rating
-		for(Book book : theLibrary) {
-			
-			ArrayList<Book> titleMatches = new ArrayList<Book>();
-			if(searchMethod.equals("title")){
-				if(book.getTitle().equals(searchId)) {
-					//return book but as arrrayList? or everything as string?
-					titleMatches.add(book);
-				}
-				return titleMatches;
-				
-			}
-			//author matches store the books that match author
-			ArrayList<Book> authorMatches = new ArrayList<Book>();
-			if(searchMethod.equals("author")) {
-				if(book.getAuthor().equals(searchId)) {
-					authorMatches.add(book);
-				}
-				return authorMatches;
-				
-			}
-			// ratingMatches stores the books that match rating searchId
-			ArrayList<Book> ratingMatches = new ArrayList<Book>();
-			if(searchMethod.equals("rating")) {
-				if(book.getRating() == Integer.parseInt(searchId)) {
-					ratingMatches.add(book);
-				}
-				return ratingMatches;
-			}
-		}
-		// should never get to null unless searchMethod and searchId have no matches
-		return null;
-	}
 	
+	}
 	// retrieve and display a list of books
 	// according to :
 	// all books sorted by title
@@ -130,20 +89,9 @@ public class Library implements Comparator<Book> {
 	// all books that have been read
 	// all books that have not been read
 	// 
-	public ArrayList<Book> getBooks(String sortMethod){
-		// sortMethod will be: title,author,read,unread
-		ArrayList<Book> sortedBooks = new ArrayList<Book>();
-		
-		
-	}
 
-	@Override
-	public int compare(Book o1, Book o2,String searchMethod) {
-		if (searchMethod.equals("title")) {
-			if(o1.getTitle().compareTo(o2.getTitle()) != 0){
-				return o1.getTitle().compareTo(o2.getTitle())
-			}
-		}
+
+	public ArrayList<E> getBooks(){
 		
 	}
 	
