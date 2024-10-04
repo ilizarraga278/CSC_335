@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
-public abstract class Library implements Comparator<Book> {
+public class Library implements Comparator<Book> {
 	private ArrayList<Book> theLibrary;
 	
 	// --- add instance variable here---
@@ -129,39 +129,73 @@ public abstract class Library implements Comparator<Book> {
 	// all books that have been read
 	// all books that have not been read
 	// 
-	public ArrayList<Book> getBooks(String sortMethod){
-		// sortMethod will be: title,author,read,unread
-		// we will use the comparator to sort the books
+	public void getBooks(String sortMethod){
+		if (sortMethod.equals("author")) {
+			sortByAuthor();
+		}
+		if(sortMethod.equals("title")) {
+			sortByTitle();
+		}
 		
+		if(sortMethod.equals("read")) {
+			sortByRead();
+		}
+		if(sortMethod.equals("unread")) {
+			sortByUnread();
+		}
+	}
+
+	private void sortByUnread() {
 		ArrayList<Book> sortedBooks = new ArrayList<Book>();
+		for(Book book : theLibrary) {
+			if(!book.isRead()) {
+				sortedBooks.add(book);
+			}
+		}
+		for(Book book: sortedBooks) {
+			System.out.println(book.toString());
+		}
+	}
+
+	private void sortByRead() {
+		ArrayList<Book> sortedBooks = new ArrayList<Book>();
+		for(Book book : theLibrary) {
+			if(book.isRead()) {
+				sortedBooks.add(book);
+			}
+		}
+		for(Book book: sortedBooks) {
+			System.out.println(book.toString());
+		}
+	}
+
+	// sort alphabetically by the authors
+	private void sortByTitle() {
+		Collections.sort(theLibrary, new Comparator<Book>() {
+			public int compare(Book b1, Book b2) {
+				return b1.getTitle().compareTo(b2.getTitle());
+			}
+		});
+		for (Book book : theLibrary) {
+			System.out.println(book.toString());
+		}
+	}
 		
+
+	private void sortByAuthor() {
+		Collections.sort(theLibrary, new Comparator<Book>() {
+			public int compare(Book b1, Book b2) {
+				return b1.getAuthor().compareTo(b2.getAuthor());
+			}
+		});
+		// TODO Auto-generated method stub
 		
 	}
 
-	public int compare(Book o1, Book o2,String searchMethod) {
-		if (searchMethod.equals("title")) {
-			if(o1.getTitle().compareTo(o2.getTitle()) != 0){
-				return o1.getTitle().compareTo(o2.getTitle());
-			}
-		}
-		if (searchMethod.equals("author")) {
-			if(o1.getAuthor().compareTo(o2.getAuthor()) != 0) {
-				return o1.getAuthor().compareTo(o2.getAuthor());
-			}
-		}
-		if (searchMethod.equals("rating")) {
-			if(o1.getRating().compareTo(o2.getRating()) != 0) {
-				return o1.getRating().compareTo(o2.getRating());
-			}
-		}
-		if(searchMethod.equals("readStatus")) {
-			if(o1.isRead().compareTo(o2.isRead()) != 0) {
-				return o1.isRead().compareTo(o2.isRead());
-			}
-		}
-		else {
-			return 0;
-		}
+	@Override
+	public int compare(Book o1, Book o2) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
