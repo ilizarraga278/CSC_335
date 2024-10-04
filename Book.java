@@ -4,16 +4,17 @@ public class Book {
 	//--more instance variables here--
 	private String title;
 	private String author;
-	private int rating; 
+	public int rating; 
 	private boolean isRead;// rating should be 1-5 can be changed, maybe
 	                    // change visibility later
 		
-	public Book() {
+	public Book(String title,String author, int rating,boolean isRead) {
 		this.title = title;
 		this.author = author;
 		this.rating = rating;
 		this.isRead = false; // default should be false?
 	}
+	
 	
 	public String getTitle() {
 		return title;
@@ -36,7 +37,6 @@ public class Book {
 	// change read status of book
 	public void read() {
 		isRead = true;
-		
 		
 	}
 }

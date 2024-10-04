@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
-public class Library {
+public abstract class Library implements Comparator<Book> {
 	private ArrayList<Book> theLibrary;
 	
 	// --- add instance variable here---
@@ -16,8 +17,9 @@ public class Library {
 	}
 	
 	// command should ask for user book info for adding
-	//library structure .add book(title,author,rating)
-	public void addBook(Book bookToAdd) {
+	//library structure .add book(title,aut
+	public void addBook(String author, String title) {
+		Book bookToAdd = new Book(author,title);
 		theLibrary.add(bookToAdd);
 	}
 	
@@ -34,8 +36,8 @@ public class Library {
 				String[] bookInfo =line.split(";");
 				String title = bookInfo[0];
 				String author = bookInfo[1];
-				int rating = Integer.MIN_VALUE;
-				Book book = new Book(title,author,rating,false);
+				
+				Book book = new Book(title,author);
 				theLibrary.add(book);
 			}
 			scanner.close();
@@ -47,21 +49,25 @@ public class Library {
 	}
 	
 	// retrieve random UNREAD book from library
-	public Book suggestRead() {
+	public String suggestRead() {
 		//randomize theLibray
 		Collections.shuffle(theLibrary);
 		// return random book
 		for(Book book : theLibrary){
 			if(book.isRead() == false) {
-				return book;
+				return book.getTitle() + book.getAuthor();
 			}
 		}
-		return null;
+		return "Sorry all books have been read";
 	}
 	
 	// ask user for book to update,set to read,unreading a
 	// book is imposisble
-	public void setToRead() {
+	//I'm thinking we have the main method of MyLibrary
+	// further prompt user for book name and then just pass
+	// it into setToRead. maybe same for other commands
+	public void setToRead(Book bookToUpdate) {
+		bookToUpdate.read();
 		
 	}
 	
@@ -69,7 +75,10 @@ public class Library {
 	// ask for rating
 	// set rating
 	// ratings should be updateable
-	public void rate() {
+	// i changed rating attr in book to public, so 
+	// it is updateable
+	public void rate(Book bookToRate,int ratingToAdd) {
+		bookToRate.rating = ratingToAdd;
 		
 	}
 
@@ -77,11 +86,42 @@ public class Library {
 	//: title,author,rating
 	// ask for appropriate info
 	// reteve info 
-	//* search will probbaly be used in getBooks()
-	public void search() {
+	//* search will probably be used in getBooks()
+	public void search(String searchMethod, String searchId) {
 		
-	
+		ArrayList<Book> match = new ArrayList<Book>();
+		searchHelper(searchMethod,searchId,match);
+		
+		if (match.isEmpty()) {
+			System.out.println("No matches found");
+		}
+		
+		for (Book book : match) {
+			System.out.println(book.toString());
+		}
 	}
+	
+	private ArrayList<Book> searchHelper(String searchMethod, String searchId, ArrayList<Book> match) {
+		for (Book book: theLibrary) {
+			if (searchMethod.equals("title")) {
+				if (book.getTitle().equals(searchId)) {
+					match.add(book);
+				}
+			}
+			if (searchMethod.equals("author")) {
+				if (book.getAuthor().equals(searchId)) {
+					match.add(book);
+				}
+			}
+			if (searchMethod.equals("rating")) {
+				if (book.getRating() == Integer.parseInt(searchId)) {
+					match.add(book);
+				}
+			}
+		}
+		return match;
+	}
+	
 	// retrieve and display a list of books
 	// according to :
 	// all books sorted by title
@@ -89,12 +129,41 @@ public class Library {
 	// all books that have been read
 	// all books that have not been read
 	// 
-
-
-	public ArrayList<E> getBooks(){
+	public ArrayList<Book> getBooks(String sortMethod){
+		// sortMethod will be: title,author,read,unread
+		// we will use the comparator to sort the books
+		
+		ArrayList<Book> sortedBooks = new ArrayList<Book>();
+		
 		
 	}
-	
 
+	public int compare(Book o1, Book o2,String searchMethod) {
+		if (searchMethod.equals("title")) {
+			if(o1.getTitle().compareTo(o2.getTitle()) != 0){
+				return o1.getTitle().compareTo(o2.getTitle());
+			}
+		}
+		if (searchMethod.equals("author")) {
+			if(o1.getAuthor().compareTo(o2.getAuthor()) != 0) {
+				return o1.getAuthor().compareTo(o2.getAuthor());
+			}
+		}
+		if (searchMethod.equals("rating")) {
+			if(o1.getRating().compareTo(o2.getRating()) != 0) {
+				return o1.getRating().compareTo(o2.getRating());
+			}
+		}
+		if(searchMethod.equals("readStatus")) {
+			if(o1.isRead().compareTo(o2.isRead()) != 0) {
+				return o1.isRead().compareTo(o2.isRead());
+			}
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	
 }
 
