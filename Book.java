@@ -8,10 +8,10 @@ public class Book {
 	private boolean isRead;// rating should be 1-5 can be changed, maybe
 	                    // change visibility later
 		
-	public Book(String title,String author, int rating,boolean isRead) {
+	public Book(String title,String author) {
 		this.title = title;
 		this.author = author;
-		this.rating = rating;
+		this.rating = 0;
 		this.isRead = false; // default should be false?
 	}
 	
@@ -28,6 +28,10 @@ public class Book {
 		return rating;
 	}
 	
+	public void setRating(int rate) {
+		rating = rate;
+	}
+	
 	
 	// return true if book is read, false if not
 	public boolean isRead() {
@@ -39,4 +43,9 @@ public class Book {
 		isRead = true;
 		
 	}
+	
+	public String toString() {
+		return title + " by " + author + ". rating: " + rating + ". read: " + isRead;
+    }
 }
+
