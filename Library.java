@@ -6,111 +6,119 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
-public class Library implements Comparator<Book> {
+
+public class Library {
 	private ArrayList<Book> theLibrary;
-	
+
 	// --- add instance variable here---
-	
+
 	// collection structure to store book objects
 	public Library() {
 		theLibrary = new ArrayList<Book>();
 	}
-	
+
 	// command should ask for user book info for adding
-	//library structure .add book(title,aut
+	// library structure .add book(title,aut
 	public void addBook(String author, String title) {
-		Book bookToAdd = new Book(author,title);
+		Book bookToAdd = new Book(author, title);
 		theLibrary.add(bookToAdd);
 	}
-	
+
 	// asks user for filename input file,reads and adds books to library
-	public void addBooks(Scanner scanner) {
+	public String addBooks(Scanner scanner) {
 		System.out.println("Please enter a filename for your books:");
 		String file = scanner.nextLine();
 		File fileName = new File(file);
 		try {
 			Scanner sc = new Scanner(fileName);
-			while(sc.hasNextLine()) {
+			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
-				String[] bookInfo =line.split(";");
+				String[] bookInfo = line.split(";");
 				String title = bookInfo[0];
 				String author = bookInfo[1];
-				
-				Book book = new Book(title,author);
+
+				Book book = new Book(title, author);
 				theLibrary.add(book);
 			}
 			sc.close();
-		}catch(FileNotFoundException e) {
-			System.out.println("File not found");
-			
+			return("Books are now in library");
+		} catch (FileNotFoundException e) {
+			return("File not found");
+
 		}
 	}
-	
+
 	// retrieve random UNREAD book from library
-	public void suggestRead() {
-		//randomize theLibray
+	public String suggestRead() {
+		// randomize theLibray
 		Collections.shuffle(theLibrary);
 		// return random book
-		for(Book book : theLibrary){
-			if(book.isRead() == false) {
-				System.out.println(book.getTitle() + ",by " + book.getAuthor());
+		for (Book book : theLibrary) {
+			if (book.isRead() == false) {
+				return(book.getTitle() + ",by " + book.getAuthor());
 			}
 		}
-		System.out.println("Sorry all books have been read.");
+		return("Sorry all books have been read.");
 	}
-	
+
 	// ask user for book to update,set to read,unreading a
 	// book is imposisble
-	//I'm thinking we have the main method of MyLibrary
+	// I'm thinking we have the main method of MyLibrary
 	// further prompt user for book name and then just pass
 	// it into setToRead. maybe same for other commands
-	public void setToRead(String title, String author) {
-		for (Book libraryBook: theLibrary) {
-			if(libraryBook.getTitle().equals(title) && libraryBook.getAuthor().equals(author)){
+	public String setToRead(String title, String author) {
+		for (Book libraryBook : theLibrary) {
+			if (libraryBook.getTitle().equals(title) && libraryBook.getAuthor().equals(author)) {
 				libraryBook.read();
+				return("Book has been set to read");
 			}
-			
+
 		}
-		
+		return("Book not in library");
+
 	}
-	
-	//ask user what book to rate
+
+	// ask user what book to rate
 	// ask for rating
 	// set rating
 	// ratings should be updateable
-	// i changed rating attr in book to public, so 
+	// i changed rating attr in book to public, so
 	// it is updateable
-	public void rate(String title, String author, int rate) {
-		for (Book libraryBook: theLibrary) {
-			if(libraryBook.getTitle().equals(title) && libraryBook.getAuthor().equals(author)){
+	public String rate(String title, String author, int rate) {
+		for (Book libraryBook : theLibrary) {
+			if (libraryBook.getTitle().equals(title) && libraryBook.getAuthor().equals(author)) {
 				libraryBook.setRating(rate);
+				return ("Rating has been set");
 			}
-			
+
 		}
-		
+		return("Book not in library");
+
 	}
 
 	// allow user to choose method for search
-	//: title,author,rating
+	// : title,author,rating
 	// ask for appropriate info
-	// reteve info 
-	//* search will probably be used in getBooks()
-	public void search(String searchMethod, String searchId) {
-		
+	// reteve info
+	// * search will probably be used in getBooks()
+	public String search(String searchMethod, String searchId) {
+
 		ArrayList<Book> match = new ArrayList<Book>();
-		searchHelper(searchMethod,searchId,match);
-		
+		searchHelper(searchMethod, searchId, match);
+
 		if (match.isEmpty()) {
-			System.out.println("No matches found");
+			return("No matches found");
 		}
 		
+		StringBuilder result = new StringBuilder();
 		for (Book book : match) {
-			System.out.println(book.toString());
+			result.append(book.toString()).append("\n");
 		}
+		return result.toString();
 	}
-	
+
 	private ArrayList<Book> searchHelper(String searchMethod, String searchId, ArrayList<Book> match) {
-		for (Book book: theLibrary) {
+		for (Book book : theLibrary) {
 			if (searchMethod.equals("title")) {
 				if (book.getTitle().equals(searchId)) {
 					match.add(book);
@@ -129,79 +137,65 @@ public class Library implements Comparator<Book> {
 		}
 		return match;
 	}
-	
+
 	// retrieve and display a list of books
 	// according to :
 	// all books sorted by title
 	// all books sorted by author
 	// all books that have been read
 	// all books that have not been read
-	// 
-	public void getBooks(String sortMethod){
-		if (sortMethod.equals("author")) {
-			sortByAuthor();
+	//
+	public String getBooks(String sortMethod) {
+		if (sortMethod.equals("author") || sortMethod.equals("title")) {
+			return (sortByString(sortMethod));
+
 		}
-		if(sortMethod.equals("title")) {
-			sortByTitle();
+
+		if (sortMethod.equals("read") || sortMethod.equals("unread")) {
+			return (sortByState(sortMethod));
 		}
-		
-		if(sortMethod.equals("read") || sortMethod.equals("unread")) {
-			sortByState(sortMethod);
-		}
-		
+		return("Search Method Not Available");
+
 	}
 
-		private void sortByState(String state) {
-	        ArrayList<Book> sortedBooks = new ArrayList<Book>();
-	        if (state.equals("read")) {
-	            for(Book book : theLibrary) {
-	                if(book.isRead()) {
-	                    sortedBooks.add(book);
-	                }
-	            }
-	        }
-	        else {
-	            for(Book book : theLibrary) {
-	                if(!book.isRead()) {
-	                    sortedBooks.add(book);
-	                }
-	            }
-	        }
-	        for(Book book: sortedBooks) {
-	            System.out.println(book.toString());
-	        }
-	    }
-
-	// sort alphabetically by the authors
-	private void sortByTitle() {
-		Collections.sort(theLibrary, new Comparator<Book>() {
-			public int compare(Book b1, Book b2) {
-				return b1.getTitle().compareTo(b2.getTitle());
+	private String sortByString(String sortMethod) {
+		StringBuilder result = new StringBuilder();
+		if (sortMethod.equals("title")) {
+			Collections.sort(theLibrary, Comparator.comparing(Book::getTitle));
+			
+			for (Book book : theLibrary) {
+				result.append(book.toString()).append("\n");
 			}
-		});
-		for (Book book : theLibrary) {
-			System.out.println(book.toString());
-		}
-	}
-		
 
-	private void sortByAuthor() {
-		Collections.sort(theLibrary, new Comparator<Book>() {
-			public int compare(Book b1, Book b2) {
-				return b1.getAuthor().compareTo(b2.getAuthor());
+		} else {
+			Collections.sort(theLibrary, Comparator.comparing(Book::getAuthor));
+			for (Book book : theLibrary) {
+				result.append(book.toString()).append("\n");
 			}
-		});
-		// TODO Auto-generated method stub
-		
+		}
+		return(result.toString());
 	}
 
-	@Override
-	public int compare(Book o1, Book o2) {
-		// TODO Auto-generated method stub
-		return 0;
+	private String sortByState(String state) {
+		ArrayList<Book> sortedBooks = new ArrayList<Book>();
+		if (state.equals("read")) {
+			for (Book book : theLibrary) {
+				if (book.isRead()) {
+					sortedBooks.add(book);
+				}
+			}
+		} else {
+			for (Book book : theLibrary) {
+				if (!book.isRead()) {
+					sortedBooks.add(book);
+				}
+			}
+		}
+		StringBuilder result = new StringBuilder();
+		for (Book book : sortedBooks) {
+			result.append(book.toString()).append("\n");
+		}
+		return(result.toString());
 	}
-	
-	
 }
-
 

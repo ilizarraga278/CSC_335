@@ -27,7 +27,8 @@ public class MyLibrary {
 			String searchMethod = scanner.nextLine();
 			System.out.println("Enter the search id/info: ");
 			String searchId = scanner.nextLine();// might have to add toLowerCase() later
-			myLibrary.search(searchMethod, searchId);
+			System.out.println(myLibrary.search(searchMethod, searchId));
+			
 			
 		}
 		if (command.equals("addBook")) {
@@ -35,7 +36,8 @@ public class MyLibrary {
 			String title = scanner.nextLine();
 			System.out.println("Enter the author: ");
 			String author = scanner.nextLine();
-			myLibrary.addBook(title,author);	
+			myLibrary.addBook(title, author);
+			System.out.println("Book has been added to the library.");	
 			}
 		
 		if (command.equals("setToRead")) {
@@ -43,7 +45,7 @@ public class MyLibrary {
 			String[] titleAuthor = scanner.nextLine().split(";");
 			String title = titleAuthor[0];
 			String author = titleAuthor[1];
-			myLibrary.setToRead(title,author);
+			System.out.println(myLibrary.setToRead(title,author));
 		}
 		if (command.equals("rate")) {
 			System.out.println("Enter title and author of the book you want to rate in TITLE;AUTHOR;RATING form:");
@@ -51,25 +53,24 @@ public class MyLibrary {
 			String title = info[0];
 			String author = info[1];
 			String rating = info[2];
-			myLibrary.rate(title,author,Integer.parseInt(rating));
+			System.out.println(myLibrary.rate(title,author,Integer.parseInt(rating)));
 		}
 		if (command.equals("getBooks")) {
 			System.out.println("Enter a method to sort the books from these options(title,author,read,unread)");
 			String sortMethod = scanner.nextLine();
-			myLibrary.getBooks(sortMethod);
+			System.out.println(myLibrary.getBooks(sortMethod));
 		}
 		if(command.equals("suggestRead")) {
 			System.out.println("Here is your random read:");
-			myLibrary.suggestRead();
+			System.out.println(myLibrary.suggestRead());
 			
 		}
 		if (command.equals("addBooks")) {
 			myLibrary.addBooks(scanner);
-			System.out.println("Thank you your books have been added to myLibary");
+			System.out.println(myLibrary.addBooks(scanner));
 		}
 		}
-}
-		// TODO Auto-generated method stub
+}	
 		
 
 
