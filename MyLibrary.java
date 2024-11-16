@@ -11,7 +11,7 @@ public class MyLibrary {
 
 		System.out.println("Enter a command or type 'exit' to quit: ");
 		String userInput = scanner.nextLine();
-		
+	
 		while(!userInput.equals("exit")) {
 			command(userInput,myLibrary,scanner);	
 			System.out.println("Enter a command or type 'exit' to quit: ");
@@ -66,8 +66,10 @@ public class MyLibrary {
 			
 		}
 		if (command.equals("addBooks")) {
-			myLibrary.addBooks(scanner);
-			System.out.println(myLibrary.addBooks(scanner));
+			System.out.println("Please enter a filename for your books:");
+			String file = scanner.nextLine();
+			myLibrary.addBooks(file);
+			System.out.println(myLibrary.addBooks(file));
 		}
 		}
 }	

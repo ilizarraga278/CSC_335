@@ -4,7 +4,7 @@ public class Book {
 	//--more instance variables here--
 	private String title;
 	private String author;
-	public int rating; 
+	private int rating; 
 	private boolean isRead;// rating should be 1-5 can be changed, maybe
 	                    // change visibility later
 		
@@ -48,4 +48,3 @@ public class Book {
 		return title + " by " + author + ". rating: " + rating + ". read: " + isRead;
     }
 }
-

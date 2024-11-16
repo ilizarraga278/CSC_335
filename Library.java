@@ -25,9 +25,8 @@ public class Library {
 	}
 
 	// asks user for filename input file,reads and adds books to library
-	public String addBooks(Scanner scanner) {
-		System.out.println("Please enter a filename for your books:");
-		String file = scanner.nextLine();
+	public String addBooks(String file) {
+		
 		File fileName = new File(file);
 		try {
 			Scanner sc = new Scanner(fileName);

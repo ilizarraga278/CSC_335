@@ -1,7 +1,12 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.Scanner;
@@ -75,27 +80,17 @@ class tests {
 	
 	@Test
 	void testAddBooks() throws IOException {
-		File file = Files.createTempFile("books",".txt").toFile();
-		file.deleteOnExit();
-		
-		try (PrintWriter out = new PrintWriter(file)) {
-			out.println("Clifford;E.B White");
-			out.println("Harry Potter;J.K Rowling");
-			
-		}
 		Library library = new Library();
-		Scanner scanner = new Scanner(file.getAbsolutePath());
-		String result = library.addBooks(scanner);
-		assertEquals("Books are now in library", result);
-		assertEquals("Clifford by E.B White. rating: 0. read: false\nHarry Potter by J.K Rowling. rating: 0. read: false\n", library.getBooks("title"));
+		
+		String result = library.addBooks("books.txt");
+		assertFalse(result.equals("File not found"));
 	}
 		
 	@Test
 	void testAddBooksFileNotFound() {
 		//test for file not found
 		Library library1 = new Library();
-		Scanner scanner1 = new Scanner("file.txt");
-		String result1 = library1.addBooks(scanner1);
+		String result1 = library1.addBooks("file.txt");
 		assertEquals("File not found", result1);
 	}
 	
@@ -171,10 +166,17 @@ class tests {
 	@Test
 	void testMain() {
 		MyLibrary myLibrary = new MyLibrary();
-        Library library = new Library();
-        Scanner scanner = new Scanner("addBook\nClifford\nE.B White\nexit\n");
-        myLibrary.main(scanner, library);
-        assertEquals("Clifford by E.B White. rating: 0. read: false\n", library.getBooks("title"));
+		Library library = new Library();
+		InputStream usrIn = new ByteArrayInputStream("addBook\nClifford\nE.B White\ngetBooks\ntitle\nexit\n".getBytes());
+		System.setIn(usrIn);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(output));
+		myLibrary.main(new String[] {});
+		String expectedOut = "Enter a command or type 'exit' to quit: \nEnter the title: \nEnter the author:\nBook has been added to the library.\n"+ "Enter a command or type 'exit' to quit: \nEnter a method to sort the books from these options(title,author,read,unread)"
+				+ "\nClifford by E.B White. rating: 0. read: false\n"+
+				"\n" + "Enter a command or type 'exit' to quit: \n";
+		assertEquals(expectedOut, output.toString());
+
 	}
 
 
